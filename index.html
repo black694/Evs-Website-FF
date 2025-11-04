@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Garden - Smart Gardening Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .blob {
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            animation: blob 7s ease-in-out infinite;
+        }
+        @keyframes blob {
+            0%, 100% { border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }
+            25% { border-radius: 58% 42% 75% 25% / 76% 46% 54% 24%; }
+            50% { border-radius: 50% 50% 33% 67% / 55% 27% 73% 45%; }
+            75% { border-radius: 33% 67% 58% 42% / 63% 68% 32% 37%; }
+        }
+        .mesh-gradient {
+            background: radial-gradient(at 40% 20%, hsla(28,100%,74%,1) 0px, transparent 50%),
+                        radial-gradient(at 80% 0%, hsla(189,100%,56%,1) 0px, transparent 50%),
+                        radial-gradient(at 0% 50%, hsla(355,100%,93%,1) 0px, transparent 50%),
+                        radial-gradient(at 80% 50%, hsla(340,100%,76%,1) 0px, transparent 50%),
+                        radial-gradient(at 0% 100%, hsla(22,100%,77%,1) 0px, transparent 50%),
+                        radial-gradient(at 80% 100%, hsla(242,100%,70%,1) 0px, transparent 50%),
+                        radial-gradient(at 0% 0%, hsla(343,100%,76%,1) 0px, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-seedling text-white text-lg"></i>
+                    </div>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Urban Garden</span>
+                </div>
+                <button onclick="window.location.href='login.html'" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-6 py-2.5 rounded-xl font-semibold hover:shadow-lg transition-all">
+                    Start Growing
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center relative overflow-hidden pt-16">
+        <div class="absolute inset-0 mesh-gradient opacity-30"></div>
+        <div class="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-purple-400 to-pink-400 blob opacity-20"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-gradient-to-r from-blue-400 to-cyan-400 blob opacity-20" style="animation-delay: -2s;"></div>
+        
+        <div class="max-w-6xl mx-auto px-6 text-center relative z-10">
+            <h1 class="text-6xl md:text-8xl font-black mb-8 hero-title">
+                Grow
+                <span class="bg-gradient-to-r from-emerald-500 via-teal-500 to-cyan-500 bg-clip-text text-transparent">
+                    Smarter
+                </span>
+                <br>Not Harder
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed hero-subtitle">
+                AI-powered urban gardening platform that turns anyone into a plant parent. 
+                Get personalized care, connect with gardeners, and watch your space bloom.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-6 justify-center hero-buttons">
+                <button onclick="window.location.href='login.html'" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-10 py-4 rounded-2xl text-lg font-bold shadow-xl hover:shadow-2xl transition-all transform hover:scale-105">
+                    Start Your Garden
+                </button>
+                <button onclick="window.open('https://github.com/anishsahoo10/uG-sample.git', '_blank')" class="border-2 border-gray-300 text-gray-700 px-10 py-4 rounded-2xl text-lg font-bold hover:border-emerald-500 hover:text-emerald-600 transition-all">
+                    Access Open Source
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Hero animations
+        gsap.timeline()
+            .from('.hero-title', { duration: 1.2, y: 100, opacity: 0, ease: 'power4.out' })
+            .from('.hero-subtitle', { duration: 1, y: 50, opacity: 0, ease: 'power3.out' }, '-=0.6')
+            .from('.hero-buttons', { duration: 0.8, y: 30, opacity: 0, ease: 'power3.out' }, '-=0.4');
+    </script>
+</body>
+</html>

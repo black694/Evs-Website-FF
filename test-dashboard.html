@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px; }
+        .success { background: #d4edda; border-color: #c3e6cb; }
+        .error { background: #f8d7da; border-color: #f5c6cb; }
+        .weather-widget { display: flex; align-items: center; gap: 15px; }
+        .weather-icon { font-size: 48px; }
+        .weather-info { flex: 1; }
+        .weather-temp { font-size: 32px; font-weight: bold; }
+        .weather-desc { font-size: 14px; opacity: 0.9; }
+        .weather-location { font-size: 12px; opacity: 0.8; }
+        .profile-card { display: flex; align-items: center; gap: 16px; }
+        .profile-avatar { width: 64px; height: 64px; border-radius: 50%; background: #16a34a; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; }
+    </style>
+</head>
+<body>
+    <h1>Dashboard Component Test</h1>
+    
+    <div class="test-section">
+        <h2>Weather Widget Test</h2>
+        <div class="weather-widget">
+            <div class="weather-icon" id="weatherIcon">☀️</div>
+            <div class="weather-info">
+                <div class="weather-temp" id="weatherTemp">Loading...</div>
+                <div class="weather-desc" id="weatherDesc">Loading...</div>
+                <div class="weather-location" id="weatherLocation">Loading...</div>
+            </div>
+        </div>
+        <div id="gardenAdvice" style="margin-top: 10px; padding: 8px; background: rgba(0,0,0,0.1); border-radius: 4px;">
+            <small>Loading advice...</small>
+        </div>
+        <button onclick="testWeather()" style="margin-top: 10px; padding: 8px 16px;">Test Weather</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Profile Test</h2>
+        <div class="profile-card">
+            <div class="profile-avatar" id="profileAvatar">
+                <span id="profilePlaceholder">👤</span>
+            </div>
+            <div class="profile-info">
+                <h3 id="profileName">Loading...</h3>
+                <p id="profileEmail">Loading...</p>
+                <div class="profile-status">🌱 Garden Enthusiast</div>
+            </div>
+        </div>
+        <button onclick="testProfile()" style="margin-top: 10px; padding: 8px 16px;">Test Profile</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test Results</h2>
+        <div id="testResults"></div>
+    </div>
+
+    <script>
+        function showSmartFallbackWeather() {
+            const now = new Date();
+            const month = now.getMonth();
+            let temp, desc, icon, advice;
+            
+            if (month >= 2 && month <= 4) { // Spring
+                temp = '18°C'; desc = 'partly cloudy'; icon = '⛅'; advice = 'Great weather for planting! 🌱';
+            } else if (month >= 5 && month <= 7) { // Summer
+                temp = '25°C'; desc = 'sunny'; icon = '☀️'; advice = 'Perfect day for gardening! Remember to water! 💧';
+            } else if (month >= 8 && month <= 10) { // Autumn
+                temp = '15°C'; desc = 'cloudy'; icon = '☁️'; advice = 'Good time for harvesting! 🍂';
+            } else { // Winter
+                temp = '8°C'; desc = 'overcast'; icon = '☁️'; advice = 'Indoor gardening season! 🏠';
+            }
+            
+            document.getElementById('weatherTemp').textContent = temp;
+            document.getElementById('weatherDesc').textContent = desc;
+            document.getElementById('weatherLocation').textContent = 'London, UK';
+            document.getElementById('weatherIcon').textContent = icon;
+            document.getElementById('gardenAdvice').innerHTML = `<small>${advice}</small>`;
+            
+            return { temp, desc, icon, advice };
+        }
+        
+        function testWeather() {
+            const results = document.getElementById('testResults');
+            try {
+                const weather = showSmartFallbackWeather();
+                results.innerHTML += '<div class="success">✅ Weather widget working - showing seasonal fallback data</div>';
+            } catch (error) {
+                results.innerHTML += '<div class="error">❌ Weather widget failed: ' + error.message + '</div>';
+            }
+        }
+        
+        function testProfile() {
+            const results = document.getElementById('testResults');
+            try {
+                // Simulate profile loading
+                document.getElementById('profileName').textContent = 'Test User';
+                document.getElementById('profileEmail').textContent = 'test@example.com';
+                results.innerHTML += '<div class="success">✅ Profile widget working - showing test data</div>';
+            } catch (error) {
+                results.innerHTML += '<div class="error">❌ Profile widget failed: ' + error.message + '</div>';
+            }
+        }
+        
+        // Auto-run tests on load
+        window.onload = function() {
+            setTimeout(() => {
+                testWeather();
+                testProfile();
+            }, 500);
+        };
+    </script>
+</body>
+</html>

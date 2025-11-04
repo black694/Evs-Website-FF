@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Gemini API</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .test-container { background: #f5f5f5; padding: 20px; border-radius: 10px; margin: 20px 0; }
+        .result { background: white; padding: 15px; border-radius: 5px; margin: 10px 0; border-left: 4px solid #4CAF50; }
+        .error { border-left-color: #f44336; }
+        button { background: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #45a049; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Gemini API Test</h1>
+    
+    <div class="test-container">
+        <h3>Quick Tests</h3>
+        <button onclick="testBasic()">Test Basic Response</button>
+        <button onclick="testGardening()">Test Gardening Question</button>
+        <button onclick="testPlantCare()">Test Plant Care</button>
+        <button onclick="testKeyRotation()">Test Key Rotation</button>
+        <button onclick="testMultipleRequests()">Test Multiple Requests</button>
+    </div>
+    
+    <div class="test-container">
+        <h3>Custom Test</h3>
+        <input type="text" id="customPrompt" placeholder="Enter your test prompt here..." value="What are the best plants for beginners?">
+        <button onclick="testCustom()">Test Custom Prompt</button>
+    </div>
+    
+    <div id="results"></div>
+
+    <script src="ai/gemini-api.js"></script>
+    <script>
+        function addResult(title, content, isError = false) {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `result ${isError ? 'error' : ''}`;
+            div.innerHTML = `<strong>${title}</strong><br>${content}`;
+            results.appendChild(div);
+        }
+
+        async function testBasic() {
+            addResult('Testing Basic Response...', 'Sending request...');
+            try {
+                const response = await callGeminiAPI('Hello, can you help me with gardening?');
+                addResult('Basic Test Result', response);
+            } catch (error) {
+                addResult('Basic Test Error', error.message, true);
+            }
+        }
+
+        async function testGardening() {
+            addResult('Testing Gardening Question...', 'Sending request...');
+            try {
+                const response = await callGeminiAPI('What are the best vegetables to grow in a small urban garden?');
+                addResult('Gardening Test Result', response);
+            } catch (error) {
+                addResult('Gardening Test Error', error.message, true);
+            }
+        }
+
+        async function testPlantCare() {
+            addResult('Testing Plant Care Question...', 'Sending request...');
+            try {
+                const response = await callGeminiAPI('My tomato plant leaves are turning yellow. What should I do?');
+                addResult('Plant Care Test Result', response);
+            } catch (error) {
+                addResult('Plant Care Test Error', error.message, true);
+            }
+        }
+
+        async function testCustom() {
+            const prompt = document.getElementById('customPrompt').value;
+            if (!prompt.trim()) {
+                addResult('Custom Test Error', 'Please enter a prompt', true);
+                return;
+            }
+            
+            addResult('Testing Custom Prompt...', `Prompt: "${prompt}"`);
+            try {
+                const response = await callGeminiAPI(prompt);
+                addResult('Custom Test Result', response);
+            } catch (error) {
+                addResult('Custom Test Error', error.message, true);
+            }
+        }
+
+        async function testKeyRotation() {
+            addResult('Testing Key Rotation...', 'Testing all 3 API keys...');
+            for (let i = 0; i < 3; i++) {
+                try {
+                    const response = await callGeminiAPI(`Test message ${i + 1}: Hello from key rotation test`);
+                    addResult(`Key Test ${i + 1}`, response);
+                } catch (error) {
+                    addResult(`Key Test ${i + 1} Error`, error.message, true);
+                }
+            }
+        }
+
+        async function testMultipleRequests() {
+            addResult('Testing Multiple Requests...', 'Sending 5 rapid requests...');
+            const promises = [];
+            for (let i = 0; i < 5; i++) {
+                promises.push(callGeminiAPI(`Request ${i + 1}: What is photosynthesis?`));
+            }
+            
+            try {
+                const responses = await Promise.all(promises);
+                responses.forEach((response, index) => {
+                    addResult(`Rapid Request ${index + 1}`, response);
+                });
+            } catch (error) {
+                addResult('Multiple Requests Error', error.message, true);
+            }
+        }
+
+        // Test API key on load
+        window.onload = function() {
+            addResult('API Configuration', `API Key: ${GEMINI_API_KEY ? 'Present' : 'Missing'}<br>API URL: ${GEMINI_API_URL}`);
+        }
+    </script>
+</body>
+</html>
